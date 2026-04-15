@@ -1,0 +1,46 @@
+:root {
+  --text: #333;
+  --text-h: #333;
+  --bg: #f7f7f7;
+  --panel: #fff;
+  --border: #dcdcdc;
+  --accent: #00b8d4;
+  --accent-hover: #008c9e;
+  --shadow: rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+
+  --sans: Arial, sans-serif;
+
+  font: 18px/145% var(--sans);
+  color: var(--text);
+  background: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  @media (max-width: 1024px) {
+    font-size: 16px;
+  }
+}
+
+#root {
+  min-height: 100svh;
+}
+
+body {
+  margin: 0;
+  display: block;
+  width: auto;
+  height: auto;
+}
+
+h1,
+h2 {
+  font-weight: 500;
+  color: var(--text-h);
+}
+
+p {
+  margin: 0;
+}
+
