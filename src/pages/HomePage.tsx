@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createUrl, deleteUrl, fetchUrls, type UrlItem } from "../lib/api";
 import { clearAccessToken } from "../lib/auth";
+import { normalizeError } from "../lib/error";
 
 export function HomePage() {
   const navigate = useNavigate();
@@ -22,12 +23,8 @@ export function HomePage() {
       const newUrl = await createUrl(inputUrl);
       setUrls((prev) => [newUrl, ...prev]);
       setInputUrl("");
-    } catch (err: unknown) {
-      const message =
-        err && typeof err === "object" && "message" in err
-          ? String((err as { message: unknown }).message)
-          : "エラーが発生しました";
-      setErrorMessage(message);
+    } catch (err) {
+      setErrorMessage(normalizeError(err));
     } finally {
       setSubmitting(false);
     }

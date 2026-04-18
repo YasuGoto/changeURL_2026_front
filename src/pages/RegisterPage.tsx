@@ -1,25 +1,16 @@
-import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { register } from '../lib/api'
-
-function normalizeMessage(err: unknown): string {
-  if (!err) return '新規登録に失敗しました'
-  if (typeof err === 'string') return err
-  if (typeof err === 'object' && err && 'message' in err) {
-    const m = (err as { message?: unknown }).message
-    if (typeof m === 'string') return m
-  }
-  return '新規登録に失敗しました'
-}
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { register } from "../lib/api";
+import { normalizeError } from "../lib/error";
 
 export function RegisterPage() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [submitting, setSubmitting] = useState(false)
-  const [errorMessage, setErrorMessage] = useState<string | null>(null)
-  const [done, setDone] = useState(false)
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [done, setDone] = useState(false);
 
   return (
     <section className="card">
@@ -33,17 +24,17 @@ export function RegisterPage() {
       <form
         className="form"
         onSubmit={async (e) => {
-          e.preventDefault()
-          setErrorMessage(null)
-          setSubmitting(true)
+          e.preventDefault();
+          setErrorMessage(null);
+          setSubmitting(true);
           try {
-            await register(email.trim(), password)
-            setDone(true)
-            setTimeout(() => navigate('/login', { replace: true }), 400)
+            await register(email.trim(), password);
+            setDone(true);
+            setTimeout(() => navigate("/login", { replace: true }), 400);
           } catch (err) {
-            setErrorMessage(normalizeMessage(err))
+            setErrorMessage(normalizeError(err));
           } finally {
-            setSubmitting(false)
+            setSubmitting(false);
           }
         }}
       >
@@ -80,13 +71,16 @@ export function RegisterPage() {
         </div>
 
         {errorMessage ? <div className="alert">{errorMessage}</div> : null}
-        {done ? <div className="success">作成しました。ログイン画面へ移動します。</div> : null}
+        {done ? (
+          <div className="success">
+            作成しました。ログイン画面へ移動します。
+          </div>
+        ) : null}
 
         <button className="button" type="submit" disabled={submitting}>
-          {submitting ? '送信中…' : '登録する'}
+          {submitting ? "送信中…" : "登録する"}
         </button>
       </form>
     </section>
-  )
+  );
 }
-

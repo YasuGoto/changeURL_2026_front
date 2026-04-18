@@ -1,30 +1,21 @@
-import { useMemo, useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { login } from '../lib/api'
-import { setAccessToken } from '../lib/auth'
-
-function normalizeMessage(err: unknown): string {
-  if (!err) return 'ログインに失敗しました'
-  if (typeof err === 'string') return err
-  if (typeof err === 'object' && err && 'message' in err) {
-    const m = (err as { message?: unknown }).message
-    if (typeof m === 'string') return m
-  }
-  return 'ログインに失敗しました'
-}
+import { useMemo, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { login } from "../lib/api";
+import { setAccessToken } from "../lib/auth";
+import { normalizeError } from "../lib/error";
 
 export function LoginPage() {
-  const navigate = useNavigate()
-  const location = useLocation()
+  const navigate = useNavigate();
+  const location = useLocation();
   const from = useMemo(() => {
-    const v = (location.state as { from?: unknown } | null)?.from
-    return typeof v === 'string' ? v : '/'
-  }, [location.state])
+    const v = (location.state as { from?: unknown } | null)?.from;
+    return typeof v === "string" ? v : "/";
+  }, [location.state]);
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [submitting, setSubmitting] = useState(false)
-  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   return (
     <section className="card">
@@ -38,17 +29,17 @@ export function LoginPage() {
       <form
         className="form"
         onSubmit={async (e) => {
-          e.preventDefault()
-          setErrorMessage(null)
-          setSubmitting(true)
+          e.preventDefault();
+          setErrorMessage(null);
+          setSubmitting(true);
           try {
-            const res = await login(email.trim(), password)
-            setAccessToken(res.access_token)
-            navigate(from, { replace: true })
+            const res = await login(email.trim(), password);
+            setAccessToken(res.access_token);
+            navigate(from, { replace: true });
           } catch (err) {
-            setErrorMessage(normalizeMessage(err))
+            setErrorMessage(normalizeError(err));
           } finally {
-            setSubmitting(false)
+            setSubmitting(false);
           }
         }}
       >
@@ -85,10 +76,9 @@ export function LoginPage() {
         {errorMessage ? <div className="alert">{errorMessage}</div> : null}
 
         <button className="button" type="submit" disabled={submitting}>
-          {submitting ? '送信中…' : 'ログイン'}
+          {submitting ? "送信中…" : "ログイン"}
         </button>
       </form>
     </section>
-  )
+  );
 }
-
