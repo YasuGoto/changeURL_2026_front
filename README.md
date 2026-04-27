@@ -1,25 +1,49 @@
-# change-url-front
+# URL短縮サービス - フロントエンド
 
-React + TypeScript + Vite のフロントエンドです。ログイン/新規登録画面を用意しています。
+React + TypeScript + Vite で構築したURL短縮サービスのフロントエンドです。
 
-## 画面
+## デモ
 
-- **ログイン**: `/login`
-- **新規登録**: `/register`
+https://change-url-front.onrender.com
 
-## モックモード（疎通なしで動かす）
+## 技術スタック
 
-`.env` に `VITE_USE_MOCK=1` を入れると、バックエンド未起動でもログイン/新規登録が動きます。
+- React 19
+- TypeScript
+- Vite
+- react-router-dom
+- Render（デプロイ）
 
-```
-VITE_USE_MOCK=1
-```
+## 機能
 
-## 起動
+- ログイン・新規登録
+- URL作成・一覧表示・削除
+- ログアウト
+
+## 画面構成
+
+| パス | 画面 | 認証 |
+|---|---|---|
+| /login | ログイン | 不要 |
+| /register | 新規登録 | 不要 |
+| / | メイン画面（URL作成・一覧） | 必要 |
+
+## ローカル起動
 
 ```bash
+# パッケージインストール
 npm install
+
+# 環境変数設定
+cp .env.example .env
+
+# 起動
 npm run dev
 ```
-## デプロイ後
-https://change-url-front.onrender.com/
+
+## 環境変数
+
+| 変数名 | 説明 |
+|---|---|
+| VITE_API_BASE_URL | バックエンドのURL |
+| VITE_USE_MOCK | モックモード（1で有効） |
